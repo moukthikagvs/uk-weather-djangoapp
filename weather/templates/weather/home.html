@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UK Weather Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>UK Weather Data</h1>
+
+    <label for="parameter">Select Parameter:</label>
+    <select id="parameter" onchange="loadData()">
+        <option value="Tmax">Tmax (Max Temp)</option>
+        <option value="Tmin">Tmin (Min Temp)</option>
+    </select>
+
+    <canvas id="weatherChart" width="600" height="300"></canvas>
+
+    <script>
+        let chart = null;
+
+        function loadData() {
+            const parameter = document.getElementById('parameter').value;
+
+            fetch(`/api/weather/?year=2020&parameter=${parameter}`)
+                .then(response => response.json())
+                .then(data => {
+                    const labels = data.map(item => item.month);
+                    const values = data.map(item => item.value);
+
+                    if (chart) {
+                        chart.destroy();
+                    }
+
+                    chart = new Chart(document.getElementById('weatherChart'), {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: parameter,
+                                data: values,
+                                borderWidth: 2
+                            }]
+                        }
+                    });
+                });
+        }
+
+        
+        loadData();
+    </script>
+</body>
+</html>
