@@ -77,25 +77,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+import dj_database_url
 import os
-from urllib.parse import urlparse
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 
-if DATABASE_URL:
-    url = urlparse(DATABASE_URL)
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": url.path[1:],
-            "USER": url.username,
-            "PASSWORD": url.password,
-            "HOST": url.hostname,
-            "PORT": url.port,
-        }
-    }
-else:
-    DATABASES = {}
 
 
 

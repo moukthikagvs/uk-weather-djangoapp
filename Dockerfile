@@ -10,4 +10,6 @@ COPY . .
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-CMD gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+CMD python manage.py migrate && \
+    python manage.py collectstatic --noinput && \
+    gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
