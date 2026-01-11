@@ -82,11 +82,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'uk_weather_db',
         'USER': 'postgres',
-        'PASSWORD': '12345',
-        'HOST': 'localhost',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
+
 
 
 
